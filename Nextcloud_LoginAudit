@@ -9,8 +9,10 @@ REQ_ID_LOG="$AUDIT_DIR/ReqId.log"
 USER_LOG="$AUDIT_DIR/user.log"
 
 # Rechte definieren
-Nextcloud_log_user = sshd:sshd # Nutzer und Gruppe für Nextcloud.log
-
+NEXTCLOUD_LOG_USER="sshd:sshd" # Nutzer und Gruppe für Nextcloud.log
+NEXTCLOUD_PERM="640"
+ARCHIV_LOG_USER="nobody:users"
+ARCHIV_PERM="666"
 
 # Überprüfen und Erstellen der ReqId.log, falls nicht vorhanden
 if [ ! -f "$REQ_ID_LOG" ]; then
@@ -42,7 +44,7 @@ grep "Login failed" "$NEXTCLOUD_LOG" | while read -r line; do
         # Wartezeit von 2 Sekunden
         sleep 1
     fi
-    
+done    
 # Archiviere nextcloud.log, wenn die Größe 20 Kilobytes erreicht ist
 if [ "$(du "$NEXTCLOUD_LOG" | cut -f1)" -ge 20 ]; then
     if [ ! -d "$ARCHIVE_DIR" ]; then
@@ -52,9 +54,8 @@ if [ "$(du "$NEXTCLOUD_LOG" | cut -f1)" -ge 20 ]; then
     archive_name="nextcloud_log_$(date +'%Y%m%d_%H%M%S').log"
     mv "$NEXTCLOUD_LOG" "$ARCHIVE_DIR/$archive_name"
     touch "$NEXTCLOUD_LOG" # Neues nextcloud.log erstellen
-    chown "$Nextcloud_log_user" "$NEXTCLOUD_LOG" 
-    chmod 777 "$NEXTCLOUD_LOG"
-    chmod 777 "$ARCHIVE_DIR/$archive_name" # Berechtigungen setzen
+    chown "$NEXTCLOUD_LOG_USER" "$NEXTCLOUD_LOG"
+    chmod "$NEXTCLOUD_PERM" "$NEXTCLOUD_LOG"
+    chmod "$ARCHIV_PERM" "$ARCHIVE_DIR/$archive_name" # Berechtigungen für Archivfile setzen
+    chown "$ARCHIV_LOG_USER" "$ARCHIVE_DIR/$archive_name" # Berechtigungen für Archivfile setzen
 fi
-
-done
