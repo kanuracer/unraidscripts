@@ -1,6 +1,9 @@
 #!/bin/bash
 
+# ----------------------------
 # Change
+# ----------------------------
+
 # backup destination
 BACKUP_DEST="/mnt/user/backup/boot/"
 # LOG directory
