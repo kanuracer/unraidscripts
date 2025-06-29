@@ -1,19 +1,28 @@
 #!/bin/bash
 
-SOURCE="/boot/"
+# Change
 # backup destination
 BACKUP_DEST="/mnt/user/backup/boot/"
+# LOG directory
 LOG_DIR="/mnt/user/logs/backup"
-LOG_FILE="$LOG_DIR/backup.log"
-ZIP_FILENAME="backup_$(date '+%Y%m%d%H%M%S').zip"
+# Tempfiles directory
 TEMP_DIR="/mnt/user/backup/temp/"
-# indexfiles
-INDEX_CURRENT="$LOG_DIR/index_current"
-INDEX_OLD="$LOG_DIR/index_old"
 # backups to keep
 MAX_BACKUPS=3
 # zip-password
 PASSWORD="password"
+
+
+# ----------------------------
+# Do not change!
+# ----------------------------
+
+SOURCE="/boot/"
+LOG_FILE="$LOG_DIR/backup.log"
+ZIP_FILENAME="backup_$(date '+%Y%m%d%H%M%S').zip"
+# indexfiles
+INDEX_CURRENT="$LOG_DIR/index_current"
+INDEX_OLD="$LOG_DIR/index_old"
 
 # Funktion zum Protokollieren von Informationen
 log() {
